@@ -1,0 +1,230 @@
+<%- include('../partials/head.ejs') %>
+
+<body id="page-top">
+  <!-- wrapper -->
+  <div id="wrapper">
+    <!-- sidebar  -->
+    <%- include('../partials/sidebar.ejs') %>
+    <!-- end sidebar -->
+    <!-- content-wrapper -->
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content">
+        <!-- navbar -->
+        <%- include('../partials/navbar.ejs') %>
+        <!-- end navbar -->
+        <div class="container-fluid">
+          <h3 class="text-dark mb-4"><%= title %></h3>
+          <div class="card shadow">
+            <div class="card-header py-3">
+              <p class="text-primary m-0 fw-bold">Products Info</p>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 text-nowrap">
+                  <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                    <label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
+                        <option value="10" selected="">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>&nbsp;</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                </div>
+              </div>
+              <!-- Button add a product -->
+              <div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProduct">
+                  Add a product
+                </button>
+
+                <div class="modal fade" id="addProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addProductLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addProductLabel"><strong>Add a product</strong></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form action="/products" method="post">
+                        <div class="modal-body">
+                          <div>
+                            <div class="mb-3">
+                              <label for="name" class="form-label">Name:</label>
+                              <input type="text" class="form-control" id="name" name="name" placeholder="Input name of product" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="price" class="form-label">Price:</label>
+                              <input type="number" min="0" class="form-control" id="price" name="price" step="0.1" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="description" class="form-label">Description:</label>
+                              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-success">Apply</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table my-0" id="dataTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">No.</th>
+                      <th style="width: 200px;">Image</th>
+                      <th>Name</th>
+                      <th style="width: 140px;">Last update</th>
+                      <th style="width: 130px;">Price</th>
+                      <th style="width: 100px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <% if (products.length > 0) {%>
+                    <% let i = 0 %>
+                    <% products.forEach(product => { %>
+                    <tr>
+                      <td><%= ++i %></td>
+                      <td>
+                        <div style="text-align: center;"><img src="assets/img/avatars/avatar1.jpeg" style="width: 120px;height: 120px;"></div>
+                      </td>
+                      <td><%= product.name %></td>
+                      <td><%= moment(product.updatedAt).format('YYYY-MM-DD') %></td>
+                      <td>$<%= product.price %></td>
+                      <td>
+                        <div>
+                          <!-- Button delete a product -->
+                          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete-<%- product._id %>" title="Delete this product">
+                            <i class="fa-solid fa-trash fa-lg"></i>
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="delete-<%- product._id %>" tabindex="-1" aria-labelledby="deleteLabel-<%- product._id %>" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="deleteLabel-<%- product._id %>"><strong>Do you want to delete this product?</strong></h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div>
+                                    Name: <%= product.name %>
+                                  </div>
+                                  <div>
+                                    Price: <%= product.price %>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <a type="button" class="btn btn-primary delete" data-doc="<%= product._id %>">Delete</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="mt-2">
+                          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#update-<%- product._id %>" title="Edit this product">
+                            <i class="fa-solid fa-pen fa-lg"></i>
+                          </button>
+
+                          <div class="modal fade" id="update-<%- product._id %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateLabel-<%- product._id %>" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h1 class="modal-title fs-5" id="updateLabel-<%- product._id %>"><strong>Add a product</strong></h1>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="/products/update/<%= product._id %>" method="post">
+                                  <div class="modal-body">
+                                    <div>
+                                      <div class="mb-3">
+                                        <label for="name" class="form-label">Name:</label>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Input name of product" value="<%= product.name %>" required>
+                                      </div>
+                                      <div class="mb-3">
+                                        <label for="price" class="form-label">Price:</label>
+                                        <input type="number" min="0" class="form-control" id="price" name="price" step="0.1" value="<%= product.price %>" required>
+                                      </div>
+                                      <div class="mb-3">
+                                        <label for="description" class="form-label">Description:</label>
+                                        <textarea class="form-control" id="description" name="description" rows="3"><%= product.description %></textarea>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <!-- <button type="submit" class="btn btn-success">Update</button> -->
+                                    <a type="button" class="btn btn-primary update" data-doc="<%= product._id %>">Update</a>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <% }) %>
+                    <% }else{ %>
+                    <tr>
+                      <td colspan="6" style="text-align: center;">No product</td>
+                    </tr>
+                    <% } %>
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td><strong>No.</strong></td>
+                      <td><strong>Image</strong></td>
+                      <td><strong>Name</strong></td>
+                      <td><strong>Last update</strong></td>
+                      <td><strong>Price</strong></td>
+                      <td><strong>Action</strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-md-6 align-self-center">
+                  <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">
+                    Showing 1 to 10 of 27</p>
+                </div>
+                <div class="col-md-6">
+                  <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                    <ul class="pagination">
+                      <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+                      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- footer -->
+      <%- include('../partials/footer.ejs') %>
+    </div>
+    <!-- end content-wrapper -->
+    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+  </div>
+  <!-- end wrapper -->
+  <!-- Bootstrap core JavaScript -->
+  <%- include('../partials/core_js.ejs') %>
+  <!-- Custom script for this page -->
+  <script src="/assets/js/products.js"></script>
+
+</body>
+
+</html>
