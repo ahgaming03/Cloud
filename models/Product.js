@@ -14,6 +14,13 @@ const ProductSchema = new Schema(
         description: {
             type: String,
         },
+        image: {
+            id: String,
+            name: String,
+            mimeType: String,
+            webViewLink: String,
+
+        },
     },
     { timestamps: true }
 );

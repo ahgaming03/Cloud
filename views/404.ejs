@@ -1,37 +1,8 @@
-<%- include('./partials/head.ejs') %>
-
-<body id="page-top">
-  <!-- wrapper -->
-  <div id="wrapper">
-    <!-- sidebar  -->
-    <%- include('./partials/sidebar.ejs') %>
-    <!-- end sidebar -->
-    <!-- content-wrapper -->
-    <div class="d-flex flex-column" id="content-wrapper">
-      <div id="content">
-        <!-- navbar -->
-        <%- include('./partials/navbar.ejs') %>
-        <!-- end navbar -->
-        <div class="container-fluid">
-          <div class="text-center mt-5">
-            <div class="error mx-auto" data-text="404">
-              <p class="m-0">404</p>
-            </div>
-            <p class="text-dark mb-5 lead">Page Not Found</p>
-            <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a href="/">←
-              Back to Dashboard</a>
-          </div>
-        </div>
-      </div>
-      <!-- footer -->
-      <%- include('./partials/footer.ejs') %>
-    </div>
-    <!-- end content-wrapper -->
-    <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+<div class="text-center mt-5">
+  <div class="error mx-auto" data-text="404">
+    <p class="m-0">404</p>
   </div>
-  <!-- end wrapper -->
-  <!-- Bootstrap core JavaScript -->
-  <%- include('./partials/core_js.ejs') %>
-</body>
-
-</html>
+  <p class="text-dark mb-5 lead">Page Not Found</p>
+  <p class="text-black-50 mb-0">It looks like you found a glitch in the matrix...</p><a href="/">←
+    Back to Dashboard</a>
+</div>
