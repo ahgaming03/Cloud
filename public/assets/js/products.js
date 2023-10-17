@@ -75,12 +75,14 @@ function previewImage(event) {
 
     if (event.target.files.length === 0) {
         const output = document.getElementById("preview");
-        output.src = "/assets/img/default_image.jpg";
+        output.src = "";
+        output.hidden = true;
         return;
     }
     reader.onload = function () {
         const output = document.getElementById("preview");
         output.src = reader.result;
+        output.hidden = false;
     };
     reader.readAsDataURL(event.target.files[0]);
 }
@@ -89,15 +91,17 @@ function previewImageUpdate(event) {
     const reader = new FileReader();
     const input = event.target;
     const id = input.getAttribute("data-id");
-    
+
     if (event.target.files.length === 0) {
         const output = document.getElementById("preview-" + id);
-        output.src = "/assets/img/default_image.jpg";
+        output.src = "";
+        output.hidden = true;
         return;
     }
     reader.onload = function () {
         const output = document.getElementById("preview-" + id);
         output.src = reader.result;
+        output.hidden = false;
     };
     reader.readAsDataURL(event.target.files[0]);
 }

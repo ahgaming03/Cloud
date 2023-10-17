@@ -51,7 +51,7 @@
                   <div class="mb-3">
                     <label for="file-update" class="form-label">Image:</label>
                     <input type="file" class="form-control mb-3 addProduct" id="file-upload" name="image" accept=".jpeg, .png, .jpg" onchange="previewImage(event)">
-                    <img id="preview" src="assets/img/default_image.jpg" alt="..." style="height: 200px; width: 200px;">
+                    <img id="preview" src="" alt="..." style="height: 200px; width: 200px;" hidden>
                   </div>
                 </div>
               </div>
@@ -88,7 +88,7 @@
                 <% if (product.image.id){ %>
                 <img src="https://drive.google.com/uc?export=view&id=<%= product.image.id  %>" style="width: 120px;height: 120px;">
                 <% } else { %>
-                <img src="/assets/img/default_image.jpg" style="width: 120px;height: 120px;">
+                <img src="/img/default_image.jpg" style="width: 120px;height: 120px;">
                 <% } %>
               </div>
             </td>
@@ -144,7 +144,7 @@
                       <form class="updateProduct" data-doc="<%= product._id %>">
                         <div class="modal-body">
                           <div>
-                            <img src="https://drive.google.com/uc?export=view&id=<%= product.image.id  %>" style="height: 200px; width: 200px;">
+                            <img src="<%= product.image.url  %>" style="height: 200px; width: 200px;">
                             <div class="mb-3">
                               <label for="name" class="form-label">Name:</label>
                               <input type="text" class="form-control" id="name" name="name" placeholder="Input name of product" value="<%= product.name %>" required>
@@ -160,13 +160,15 @@
                             <div class="mb-3">
                               <label for="file-update" class="form-label">Image:</label>
                               <input type="file" class="form-control mb-3 updateProduct" id="file-upload" name="image" accept=".jpeg, .png, .jpg" data-id="<%= product._id %>" onchange="previewImageUpdate(event)">
-                              <img id="preview-<%= product._id %>" src="assets/img/default_image.jpg" style="height: 160px; width: 160px;">
+                              <img id="preview-<%= product._id %>" src="" style="height: 160px; width: 160px;" hidden>
                             </div>
                           </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="submit" id="btnUpdate" class="btn btn-success">Update</button>
+                          <button type="submit" id="btnUpdate" class="btn btn-success">
+                            Update
+                          </button>
                         </div>
                       </form>
                     </div>
@@ -203,16 +205,17 @@
       <div class="col-md-6">
         <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
           <ul class="pagination">
-            <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
+            <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">&laquo;</span></a></li>
             <li class="page-item active"><a class="page-link" href="#">1</a></li>
             <li class="page-item"><a class="page-link" href="#">2</a></li>
             <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
+            <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">&raquo;</span></a></li>
           </ul>
         </nav>
       </div>
     </div>
   </div>
 </div>
+
 
 <script src="/assets/js/products.js"></script>

@@ -18,8 +18,8 @@ const ProductSchema = new Schema(
             id: String,
             name: String,
             mimeType: String,
-            webViewLink: String,
-
+            url: String,
+            
         },
     },
     { timestamps: true }

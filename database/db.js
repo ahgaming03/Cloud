@@ -1,16 +1,8 @@
 const mongoose = require("mongoose");
 
-const username = "root";
-const password = "Abcd1234";
 const dbName = "ToyShop";
 
-const uri =
-    "mongodb+srv://" +
-    username +
-    ":" +
-    password +
-    "@mvc-example.elbom2r.mongodb.net/" +
-    dbName;
+const uri = "mongodb+srv://admin:Abcd1234@cloud.ls9nsmr.mongodb.net/" + dbName;
 
 const connectDB = async () => {
     mongoose

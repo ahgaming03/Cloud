@@ -25,7 +25,6 @@ const product_index = (req, res) => {
 const product_create_post = async (req, res) => {
     const { body, files } = req;
     try {
-        console.log(files);
         let image = "";
         if (files.length > 0) {
             image = await uploadFile(files[0]);
@@ -34,12 +33,17 @@ const product_create_post = async (req, res) => {
             name: body.name,
             price: body.price,
             description: body.description,
-            image: image,
+            image: {
+                id: image.id,
+                name: image.name,
+                mimeType: image.mimeType,
+                url: "https://drive.google.com/uc?export=view&id=" + image.id,
+            },
         });
         product
             .save()
             .then((result) => {
-                console.log("Add a product successfully" + result);
+                console.log("Add a product successfully");
                 res.json({ redirect: "/products" });
             })
             .catch((err) => {
@@ -54,17 +58,7 @@ const product_create_post = async (req, res) => {
 const product_delete = (req, res) => {
     const id = req.params.id;
 
-    Product.findById(id)
-        .then((result) => {
-            if (result.image !== null) {
-                drive.files.delete({
-                    fileId: result.image.id,
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    deleteImage(id);
     Product.findByIdAndDelete(id)
         .then((result) => {
             res.json({ redirect: "/products" });
@@ -81,25 +75,23 @@ const product_update_post = async (req, res) => {
     try {
         let image = "";
         if (files.length > 0) {
-            Product.findById(id)
-                .then((result) => {
-                    if (result.image !== null) {
-                        drive.files.delete({
-                            fileId: result.image.id,
-                        });
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            deleteImage(id);
             image = await uploadFile(files[0]);
             Product.findByIdAndUpdate(id, {
                 name: body.name,
                 price: body.price,
                 description: body.description,
-                image: image,
+                image: {
+                    id: image.id,
+                    name: image.name,
+                    mimeType: image.mimeType,
+                    url:
+                        "https://drive.google.com/uc?export=view&id=" +
+                        image.id,
+                },
             })
                 .then((result) => {
+                    console.log("Add a product successfully");
                     res.json({ redirect: "/products" });
                 })
                 .catch((err) => {
@@ -112,6 +104,7 @@ const product_update_post = async (req, res) => {
                 description: body.description,
             })
                 .then((result) => {
+                    console.log("Add a product successfully");
                     res.json({ redirect: "/products" });
                 })
                 .catch((err) => {
@@ -143,7 +136,7 @@ const uploadFile = async (fileObject) => {
         console.log(`Uploaded file:`, data);
         return data;
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 };
 
@@ -159,6 +152,20 @@ const setFilePublic = async (fileId) => {
     } catch (err) {
         console.log(err);
     }
+};
+const deleteImage = async (id) => {
+    await Product.findById(id)
+        .then((result) => {
+            if (result.image) {
+                drive.files.delete({
+                    fileId: result.image.id,
+                });
+                console.log("Image on cloud was deleted");
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
 module.exports = {
